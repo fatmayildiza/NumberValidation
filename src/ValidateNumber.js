@@ -2,22 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, StyleSheet, Animated, Easing, Image } from 'react-native';
 import { validatePhoneNumber } from './validationUtils';
 
+// ValidateNumber bileşeni, telefon numarası girişini doğrulayan ve hata durumlarında animasyon ekleyen bir React Native bileşenidir.
+// Props:
+// - value: Telefon numarasının değerini kontrol etmek için dışarıdan alınan fonksiyon.
+// - language: Telefon numarasının doğruluğunu kontrol etmek için kullanılan dil.
+// - errorColor: Hata durumunda kullanılacak renk (Varsayılan: 'red').
+// - secureTextEntry: Güvenli metin girişini etkinleştirmek için kullanılır (Varsayılan: false).
+
 const ValidateNumber = ({value, language, errorColor, secureTextEntry }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [validationResult, setValidationResult] = useState({ isValid: true, errors: [] });
-
+  // Telefon numarası değiştiğinde çalışan fonksiyon.
   const handlePhoneNumberChange = (text) => {
     setPhoneNumber(text);
     const result = validatePhoneNumber(text, language);
     setValidationResult(result);
-    value(text)
+    value(text) // Dışarıdan gelen fonksiyonu çağırarak değeri kontrol et.
   };
-
-  // Animated value for the shaking animation
+  // Sarsılma animasyonu için Animated değeri.
   const shakeAnimationValue = new Animated.Value(0);
 
   useEffect(() => {
-    // Trigger the shaking animation when validationResult.isValid becomes false
+     // Hata durumunda sarsılma animasyonunu tetikleyen useEffect.
     if (!validationResult.isValid) {
       startShakeAnimation();
     }
@@ -31,16 +37,26 @@ const ValidateNumber = ({value, language, errorColor, secureTextEntry }) => {
   // }, [phoneNumber])
   
 
-  const startShakeAnimation = () => {
-    shakeAnimationValue.setValue(0);
-    Animated.sequence([
-      Animated.timing(shakeAnimationValue, { toValue: 10, duration: 100, easing: Easing.linear, useNativeDriver: true }),
-      Animated.timing(shakeAnimationValue, { toValue: -10, duration: 100, easing: Easing.linear, useNativeDriver: true }),
-      Animated.timing(shakeAnimationValue, { toValue: 10, duration: 100, easing: Easing.linear, useNativeDriver: true }),
-      Animated.timing(shakeAnimationValue, { toValue: 0, duration: 100, easing: Easing.linear, useNativeDriver: true }),
-    ]).start();
-  };
+// Sarsılma animasyonunu başlatan fonksiyon.
+const startShakeAnimation = () => {
+  // ShakeAnimation değerini sıfırla.
+  shakeAnimationValue.setValue(0);
 
+  // Sırasıyla çalışacak animasyonlar.
+  Animated.sequence([
+    // Birinci adımda pozitif yönde sarsılma.
+    Animated.timing(shakeAnimationValue, { toValue: 10, duration: 100, easing: Easing.linear, useNativeDriver: true }),
+
+    // İkinci adımda negatif yönde sarsılma.
+    Animated.timing(shakeAnimationValue, { toValue: -10, duration: 100, easing: Easing.linear, useNativeDriver: true }),
+
+    // Üçüncü adımda pozitif yönde sarsılma.
+    Animated.timing(shakeAnimationValue, { toValue: 10, duration: 100, easing: Easing.linear, useNativeDriver: true }),
+
+    // Son adımda sıfıra dönme.
+    Animated.timing(shakeAnimationValue, { toValue: 0, duration: 100, easing: Easing.linear, useNativeDriver: true }),
+  ]).start();
+};
   const interpolatedShakeAnimation = shakeAnimationValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['0deg', '1deg'],

@@ -1,6 +1,6 @@
 {
   "name": "react-native-valid-number-checker-animated",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A simple number validation user input component",
   "main": "./src/index.js",
   "scripts": {

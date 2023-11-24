@@ -6,13 +6,13 @@ The **Number Validation Component** is a React Native input component designed f
 Install the **Number Validation Component** using npm:
 
 ```bash
-npm install react-native-valid-number-checker
+npm react-native-valid-number-checker-animated
 ```
 
 ## Usage
 Import the component into your React Native project:
 ```javascript
-import ValidateNumber from 'react-native-valid-number-checker';
+import ValidateNumber from 'react-native-valid-number-checker-animated';
 ```
 
 ## Props
@@ -27,7 +27,7 @@ import ValidateNumber from 'react-native-valid-number-checker';
 ```javascript
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import {ValidateNumber} from 'react-native-valid-number-checker';
+import {ValidateNumber} from 'react-native-valid-number-checker-animated';
 
 const MyForm = () => {
   const [phoneNumber, setPhoneNumber] = useState('');

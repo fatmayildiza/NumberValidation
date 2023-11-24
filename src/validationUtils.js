@@ -6,7 +6,7 @@ export const validatePhoneNumber = (numberInput, language = "EN") => {
     }
   
     // Check for number format (integer or decimal)
-    // Geçersiz karakter girilmesi durumunda yapılacak kontrol
+    // Geçersiz karakter girilmesi durumunda yapılacak kontrol redex
     if (!/^\d*\.?\d*$/.test(numberInput)) {
       return { isValid: false, errors: [language === "TR" ? 'Geçersiz Karakter Kullanılamaz!' : 'Invalid number format'] };
     }

@@ -57,10 +57,15 @@ const startShakeAnimation = () => {
     Animated.timing(shakeAnimationValue, { toValue: 0, duration: 100, easing: Easing.linear, useNativeDriver: true }),
   ]).start();
 };
-  const interpolatedShakeAnimation = shakeAnimationValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '1deg'],
-  });
+ // ShakeAnimation değerini başka bir değere dönüştüren interpolate fonksiyonu.
+const interpolatedShakeAnimation = shakeAnimationValue.interpolate({
+  // Giriş değerleri aralığı, shakeAnimationValue'in alabileceği değer aralığıdır (0'dan 1'e).
+  inputRange: [0, 1],
+
+  // Çıkış değerleri aralığı, shakeAnimationValue'in giriş aralığındaki değerlerin karşılığıdır.
+  outputRange: ['0deg', '1deg'],
+});
+
 
   const animatedStyle = {
     transform: [{ rotate: interpolatedShakeAnimation }],
@@ -68,36 +73,45 @@ const startShakeAnimation = () => {
 
 
   return (
-      <Animated.View style={[styles.inputContainer, validationResult.isValid ? null : animatedStyle]}>
-        {validationResult.errors.length > 0 && (
-          <View style={styles.errorContainer}>
-            {validationResult.errors.map((error, index) => (
-              <Text key={index} style={{color: errorColor ? errorColor : 'red'}}>
-                {error}
-              </Text>
-            ))}
-          </View>
-        )}
+     // Animated.View bileşeni, animasyonlu bir view oluşturur. Stil özellikleri dinamik olarak değişebilir.
+<Animated.View style={[styles.inputContainer, validationResult.isValid ? null : animatedStyle]}>
+  {/* Eğer doğrulama hataları varsa, hata mesajlarını içeren bir View oluşturun. */}
+  {validationResult.errors.length > 0 && (
+    <View style={styles.errorContainer}>
+      {/* Hata mesajlarını map fonksiyonuyla dönerek ekrana yazdırın. */}
+      {validationResult.errors.map((error, index) => (
+        <Text key={index} style={{ color: errorColor ? errorColor : 'red' }}>
+          {error}
+        </Text>
+      ))}
+    </View>
+  )}
 
-        <View style={styles.imageWithTextInput}>
-          <Image style={styles.icon} source={require('./assets/phoneIcon.png')} />
-          <TextInput
-            style={[
-              {
-                borderColor: !validationResult.isValid ?(errorColor ? errorColor : 'red') : 'gray',
-                color: !validationResult.isValid ? 'red' : 'black',
-                borderWidth: !validationResult.isValid ? 1 : 0.2,
-              },
-              styles.input,
-            ]}
-            secureTextEntry={secureTextEntry || false}
-            placeholder="Enter phone number"
-            keyboardType="phone-pad"
-            value={phoneNumber}
-            onChangeText={handlePhoneNumberChange}
-          />
-        </View>
-      </Animated.View>
+  {/* Telefon ikonu ve giriş kutusunu içeren bir View oluşturun. */}
+  <View style={styles.imageWithTextInput}>
+    {/* Telefon ikonunu gösteren bir Image bileşeni. */}
+    <Image style={styles.icon} source={require('./assets/phoneIcon.png')} />
+
+    {/* Telefon numarasını girmek için TextInput bileşeni. */}
+    <TextInput
+      style={[
+        {
+          // Doğrulama başarısızsa çerçeve rengini (borderColor) ve metin rengini değiştirin.
+          borderColor: !validationResult.isValid ? (errorColor ? errorColor : 'red') : 'gray',
+          color: !validationResult.isValid ? 'red' : 'black',
+          // Doğrulama başarısızsa çerçeve kalınlığını değiştirin.
+          borderWidth: !validationResult.isValid ? 1 : 0.2,
+        },
+        styles.input,
+      ]}
+      secureTextEntry={secureTextEntry || false}
+      placeholder="Enter phone number"
+      keyboardType="phone-pad"
+      value={phoneNumber}
+      onChangeText={handlePhoneNumberChange}
+    />
+  </View>
+</Animated.View>
   );
 };
 
